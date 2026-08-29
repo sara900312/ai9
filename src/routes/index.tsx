@@ -39,11 +39,10 @@ function Index() {
       </div>
 
       <header className="border-b border-primary/15 bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <h1 className="mx-auto text-center text-2xl font-extrabold tracking-widest text-primary">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-center px-4 py-4">
+          <h1 className="text-center text-2xl font-extrabold tracking-widest text-primary">
             NEOMART
           </h1>
-          <div className="w-14" />
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 pb-3 text-sm text-foreground">
           {NAV.map((item, i) => (
