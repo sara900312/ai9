@@ -34,7 +34,7 @@ const NAV = [
 function Index() {
   return (
     <div dir="rtl" className="flex min-h-screen flex-col bg-background font-sans">
-      <div className="bg-gradient-to-l from-primary/40 via-primary/70 to-primary/40 py-2 text-center text-xs font-medium text-primary-foreground">
+      <div className="bg-[#f27fb0] py-2 text-center text-xs font-normal text-black">
         مرحباً بكم في متجرنا
       </div>
 
