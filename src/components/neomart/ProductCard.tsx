@@ -1,5 +1,11 @@
+import { useEffect, useState } from "react";
 import { ExternalLink, ShoppingBag } from "lucide-react";
-import { formatPrice, productUrl, type NeoProduct } from "@/lib/neo-chat";
+import {
+  fetchProductUrl,
+  formatPrice,
+  productUrl,
+  type NeoProduct,
+} from "@/lib/neo-chat";
 
 const CATEGORY_LABELS: Record<string, string> = {
   hair_care: "العناية بالشعر",
@@ -10,11 +16,22 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export function ProductCard({ product }: { product: NeoProduct }) {
+  const [resolvedUrl, setResolvedUrl] = useState<string | null>(null);
   const price = formatPrice(
     product.is_discounted && product.discounted_price ? product.discounted_price : product.price,
   );
   const oldPrice = product.is_discounted ? formatPrice(product.price) : null;
-  const url = productUrl(product);
+  useEffect(() => {
+    let active = true;
+    void fetchProductUrl(product.id).then((url) => {
+      if (active && url) setResolvedUrl(url);
+    });
+    return () => {
+      active = false;
+    };
+  }, [product.id]);
+
+  const url = resolvedUrl ?? productUrl(product);
   const category = product.category
     ? (CATEGORY_LABELS[product.category] ?? product.category)
     : null;

@@ -70,6 +70,47 @@ export function formatPrice(value?: number | null): string | null {
 }
 
 /** Never invent a URL: fall back to the beauty storefront. */
+const PRODUCT_CATEGORY_PATHS: Record<string, string> = {
+  hair_care: "haircare",
+  skin_care: "skincare",
+  body_care: "bodycare",
+  makeup: "makeup",
+  perfume: "perfume",
+};
+
 export function productUrl(_product: NeoProduct): string {
   return NEOMART_LINKS.home;
+}
+
+export async function fetchProductUrl(id: number | string): Promise<string | null> {
+  const anonKey = import.meta.env["VITE_NEOMART_SUPABASE_ANON_KEY"] as string | undefined;
+  if (!anonKey) return null;
+
+  const response = await fetch(
+    `https://ykyzviqwscrjjkucorlp.supabase.co/rest/v1/products?select=*&id=eq.${encodeURIComponent(String(id))}`,
+    {
+      headers: {
+        apikey: anonKey,
+        authorization: `Bearer ${anonKey}`,
+      },
+    },
+  );
+  if (!response.ok) return null;
+
+  const rows = (await response.json()) as Array<Record<string, unknown>>;
+  const product = rows[0];
+  if (!product) return null;
+
+  for (const key of ["product_url", "url", "link"]) {
+    if (typeof product[key] === "string" && product[key].startsWith("https://")) {
+      return product[key];
+    }
+  }
+
+  const slug = typeof product.slug === "string" ? product.slug : null;
+  const category = typeof product.category === "string" ? product.category : null;
+  const categoryPath = category ? (PRODUCT_CATEGORY_PATHS[category] ?? category) : null;
+  if (!slug || !categoryPath) return null;
+
+  return `https://neomart.space/beauty/product/${encodeURIComponent(categoryPath)}/${encodeURIComponent(slug)}/${encodeURIComponent(String(id))}`;
 }
