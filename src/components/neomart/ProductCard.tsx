@@ -1,10 +1,6 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { ExternalLink, ShoppingBag } from "lucide-react";
-import {
-  fetchProductUrl,
-  formatPrice,
-  type NeoProduct,
-} from "@/lib/neo-chat";
+import { formatPrice, productUrl, type NeoProduct } from "@/lib/neo-chat";
 
 const CATEGORY_LABELS: Record<string, string> = {
   hair_care: "العناية بالشعر",
@@ -15,30 +11,13 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export function ProductCard({ product }: { product: NeoProduct }) {
-  const [resolvedUrl, setResolvedUrl] = useState<string | null>(null);
-  const [urlResolved, setUrlResolved] = useState(false);
+  const url = productUrl(product);
   const price = formatPrice(
     product.is_discounted && product.discounted_price ? product.discounted_price : product.price,
   );
   const oldPrice = product.is_discounted ? formatPrice(product.price) : null;
-  useEffect(() => {
-    let active = true;
-    void fetchProductUrl(product)
-      .catch(() => null)
-      .then((url) => {
-        if (active) setResolvedUrl(url);
-      })
-      .finally(() => {
-        if (active) setUrlResolved(true);
-      });
-    return () => {
-      active = false;
-    };
-  }, [product.id]);
-
-  const url = resolvedUrl ?? "#";
   const openProduct = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!urlResolved || !resolvedUrl) event.preventDefault();
+    if (!url) event.preventDefault();
   };
   const category = product.category
     ? (CATEGORY_LABELS[product.category] ?? product.category)
@@ -84,9 +63,9 @@ export function ProductCard({ product }: { product: NeoProduct }) {
 
         <div className="flex flex-wrap gap-2 pt-2">
           <a
-            href={url}
+            href={url ?? "#"}
             onClick={openProduct}
-            aria-disabled={!urlResolved || !resolvedUrl}
+            aria-disabled={!url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary aria-disabled:pointer-events-none aria-disabled:opacity-50"

@@ -70,7 +70,6 @@ export function formatPrice(value?: number | null): string | null {
   return `${value.toLocaleString("en-US")} د.ع`;
 }
 
-/** Never invent a URL: fall back to the beauty storefront. */
 const PRODUCT_CATEGORY_PATHS: Record<string, string> = {
   hair_care: "haircare",
   skin_care: "skincare",
@@ -79,38 +78,21 @@ const PRODUCT_CATEGORY_PATHS: Record<string, string> = {
   perfume: "perfume",
 };
 
-export async function fetchProductUrl(
-  product: Pick<NeoProduct, "id" | "category" | "slug">,
-): Promise<string | null> {
-  const directCategoryPath = product.category
+function slugFromName(name: string): string {
+  return name
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function productUrl(product: NeoProduct): string | null {
+  const categoryPath = product.category
     ? (PRODUCT_CATEGORY_PATHS[product.category] ?? product.category)
     : null;
-  if (product.slug && directCategoryPath) {
-    return `https://neomart.space/beauty/product/${encodeURIComponent(directCategoryPath)}/${encodeURIComponent(product.slug)}/${encodeURIComponent(String(product.id))}`;
-  }
-
-  const anonKey = import.meta.env["VITE_NEOMART_SUPABASE_ANON_KEY"] as string | undefined;
-  if (!anonKey) return null;
-
-  const response = await fetch(
-    `https://ykyzviqwscrjjkucorlp.supabase.co/rest/v1/products?select=id,category,slug&id=eq.${encodeURIComponent(String(product.id))}`,
-    {
-      headers: {
-        apikey: anonKey,
-        authorization: `Bearer ${anonKey}`,
-      },
-    },
-  );
-  if (!response.ok) return null;
-
-  const rows = (await response.json()) as Array<Record<string, unknown>>;
-  const databaseProduct = rows[0];
-  if (!databaseProduct) return null;
-
-  const slug = typeof databaseProduct.slug === "string" ? databaseProduct.slug : null;
-  const category = typeof databaseProduct.category === "string" ? databaseProduct.category : null;
-  const categoryPath = category ? (PRODUCT_CATEGORY_PATHS[category] ?? category) : null;
-  if (!slug || !categoryPath) return null;
+  const slug = product.slug || slugFromName(product.name);
+  if (!categoryPath || !slug) return null;
 
   return `https://neomart.space/beauty/product/${encodeURIComponent(categoryPath)}/${encodeURIComponent(slug)}/${encodeURIComponent(String(product.id))}`;
 }
