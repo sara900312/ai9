@@ -37,7 +37,7 @@ export async function sendToNeoChat(
   messages: ChatMessage[],
   signal?: AbortSignal,
 ): Promise<NeoChatResponse> {
-  const anonKey = import.meta.env['VITE_SUPABASE_ANON_KEY'] as string | undefined;
+  const anonKey = import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined;
   const headers: Record<string, string> = { "content-type": "application/json" };
   if (anonKey) {
     headers["apikey"] = anonKey;

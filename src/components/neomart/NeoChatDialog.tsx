@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Bot, RefreshCw, Send, Sparkle, X } from "lucide-react";
 import { ProductCard } from "./ProductCard";
-import {
-  NEOMART_LINKS,
-  sendToNeoChat,
-  type ChatMessage,
-} from "@/lib/neo-chat";
+import { NEOMART_LINKS, sendToNeoChat, type ChatMessage } from "@/lib/neo-chat";
 
 const SUGGESTIONS = [
   "ابحث لي عن منتج للعناية بالشعر",
@@ -53,10 +49,7 @@ export function NeoChatDialog({ open, onClose }: { open: boolean; onClose: () =>
     setError(false);
     try {
       const res = await sendToNeoChat(history);
-      setMessages([
-        ...history,
-        { role: "assistant", content: res.reply, products: res.products },
-      ]);
+      setMessages([...history, { role: "assistant", content: res.reply, products: res.products }]);
     } catch {
       setError(true);
     } finally {

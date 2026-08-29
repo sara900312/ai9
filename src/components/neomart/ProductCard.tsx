@@ -15,7 +15,9 @@ export function ProductCard({ product }: { product: NeoProduct }) {
   );
   const oldPrice = product.is_discounted ? formatPrice(product.price) : null;
   const url = productUrl(product);
-  const category = product.category ? (CATEGORY_LABELS[product.category] ?? product.category) : null;
+  const category = product.category
+    ? (CATEGORY_LABELS[product.category] ?? product.category)
+    : null;
 
   return (
     <article className="flex gap-3 overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-sm transition-shadow hover:shadow-md">
