@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 import { NeoChat } from "@/components/neomart/NeoChat";
 import { NEOMART_LINKS } from "@/lib/neo-chat";
 
@@ -60,27 +59,6 @@ function Index() {
         <NeoChat />
       </main>
 
-      <footer className="border-t-2 border-primary/70 bg-card">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-6">
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-foreground">
-            <a href="tel:+9647776845909" className="flex items-center gap-2 hover:text-primary">
-              <Phone className="h-4 w-4" />
-              +9647776845909
-            </a>
-            <a
-              href="mailto:non-reply@neomart.space"
-              className="flex items-center gap-2 hover:text-primary"
-            >
-              <Mail className="h-4 w-4" />
-              non-reply@neomart.space
-            </a>
-          </div>
-          <div className="flex items-center gap-4 text-primary">
-            <Instagram className="h-5 w-5" />
-            <Facebook className="h-5 w-5" />
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
