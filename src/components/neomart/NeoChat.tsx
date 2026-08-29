@@ -4,7 +4,7 @@ import {
   MessageSquarePlus,
   Droplets,
   RefreshCw,
-  Scissors,
+  Search,
   Send,
   Sparkles,
 } from "lucide-react";
@@ -14,27 +14,27 @@ import { sendToNeoChat, type ChatMessage } from "@/lib/neo-chat";
 const CAPABILITIES = [
   {
     icon: Droplets,
-    title: "روتين بشرتي",
-    description: "ساعدني أختار المنتجات المناسبة",
-    question: "ساعدني أختار منتجات مناسبة لروتين بشرتي",
+    title: "شنو أفضل منتجات للبشرة الدهنية؟",
+    description: "خيارات مناسبة للبشرة الدهنية",
+    question: "شنو أفضل منتجات للبشرة الدهنية؟",
   },
   {
     icon: Droplets,
-    title: "العناية بالبشرة الجافة",
-    description: "اكتشف المنتجات المناسبة لبشرتي",
-    question: "أريد منتجات تساعدني على العناية بالبشرة الجافة",
+    title: "شنو أفضل منتجات للبشرة الجافة؟",
+    description: "خيارات مناسبة للبشرة الجافة",
+    question: "شنو أفضل منتجات للبشرة الجافة؟",
   },
   {
     icon: Sparkles,
-    title: "روتين شعري",
-    description: "ساعدني أختار منتجات العناية بشعري",
-    question: "ساعدني أختار منتجات مناسبة للعناية بشعري",
+    title: "شنو أفضل منتجات لحب الشباب؟",
+    description: "اكتشف المنتجات المناسبة",
+    question: "شنو أفضل منتجات لحب الشباب؟",
   },
   {
-    icon: Scissors,
-    title: "العناية بالشعر",
-    description: "اكتشف المنتجات المناسبة لاحتياجات شعري",
-    question: "أريد منتجات مناسبة لاحتياجات شعري",
+    icon: Search,
+    title: "شنو أفضل منتجات للرؤوس السوداء؟",
+    description: "اكتشف المنتجات المناسبة",
+    question: "شنو أفضل منتجات للرؤوس السوداء؟",
   },
 ];
 
@@ -123,10 +123,7 @@ export function NeoChat() {
                   <button
                     key={title}
                     type="button"
-                    onClick={() => {
-                      setInput(question);
-                      textareaRef.current?.focus();
-                    }}
+                    onClick={() => send(question)}
                     className="group flex items-center gap-3 rounded-2xl border border-primary/15 bg-background p-4 text-right shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
                   >
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
