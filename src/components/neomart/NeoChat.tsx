@@ -60,30 +60,26 @@ export function NeoChat() {
     <div
       dir="rtl"
       aria-label="NEOMART AI"
-      className="flex h-[80dvh] min-h-[480px] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-primary/15 bg-background shadow-xl shadow-primary/10"
+      className="flex h-[clamp(32rem,72dvh,42rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-primary/20 bg-card shadow-md shadow-primary/5"
     >
-      {/* Header */}
-      <header className="flex items-center gap-3 border-b border-border bg-gradient-to-l from-primary/10 to-transparent px-4 py-3 sm:px-6">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+      <header className="flex items-center gap-3 border-b border-border px-4 py-4 sm:px-6">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm shadow-primary/20">
           <Bot className="h-5 w-5" />
         </div>
-        <div className="min-w-0 flex-1">
-          <h2 className="truncate text-base font-extrabold tracking-wide text-primary">NEO AI</h2>
-          <p className="truncate text-xs text-muted-foreground">
-            مساعدك الذكي لاكتشاف المنتجات المناسبة
-          </p>
+        <div className="min-w-0 flex-1 text-right">
+          <h2 className="text-base font-extrabold tracking-wide text-foreground">NEO AI</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">مساعدك الذكي لاكتشاف المنتجات المناسبة</p>
         </div>
       </header>
 
-      {/* Nav */}
-      <nav className="flex flex-wrap gap-2 border-b border-border px-4 py-2 sm:px-6">
+      <nav className="grid grid-cols-2 gap-2 border-b border-border px-4 py-3 sm:grid-cols-4 sm:px-6">
         {NAV_LINKS.map((link) => (
           <a
             key={link.label}
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-primary/30 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
+            className="rounded-lg px-3 py-2 text-center text-xs font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
           >
             {link.label}
           </a>
@@ -92,28 +88,27 @@ export function NeoChat() {
           href={NEOMART_LINKS.main}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-secondary"
+          className="rounded-lg px-3 py-2 text-center text-xs font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
         >
           الموقع الرئيسي
         </a>
       </nav>
 
-      {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6">
         {messages.length === 0 && !loading ? (
-          <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
-            <div>
-              <p className="text-lg font-bold text-foreground">كيف أساعدك اليوم؟</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                اسألني عن أي منتج وسأبحث لك في متجر NEOMART
+          <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
+            <div className="max-w-md">
+              <p className="text-xl font-extrabold text-foreground">كيف أساعدك اليوم؟</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                اسألني عن أي منتج في NEOMART وسأساعدك في العثور على الأنسب لك.
               </p>
             </div>
-            <div className="grid w-full max-w-md gap-2">
+            <div className="grid w-full max-w-2xl gap-2.5 sm:grid-cols-2">
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s}
                   onClick={() => send(s)}
-                  className="rounded-2xl border border-border px-4 py-2.5 text-right text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5"
+                  className="rounded-xl border border-border bg-background px-4 py-3 text-right text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5"
                 >
                   {s}
                 </button>
@@ -179,14 +174,13 @@ export function NeoChat() {
         )}
       </div>
 
-      {/* Input */}
-      <div className="border-t border-border bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6">
+      <div className="border-t border-border bg-card px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             send(input);
           }}
-          className="flex items-end gap-2 rounded-2xl border border-border bg-card p-2 focus-within:border-primary/50"
+          className="flex items-end gap-2 rounded-xl border border-border bg-background p-2 shadow-sm transition-colors focus-within:border-primary/50"
         >
           <textarea
             ref={textareaRef}
@@ -206,7 +200,7 @@ export function NeoChat() {
             type="submit"
             disabled={loading || !input.trim()}
             aria-label="إرسال"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-40"
           >
             <Send className="h-4 w-4 rotate-180" />
           </button>

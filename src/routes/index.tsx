@@ -57,11 +57,7 @@ function Index() {
         </nav>
       </header>
 
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-6 px-4 py-20 text-center">
-        <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl"></h2>
-        <p className="max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
-          مساعدك الذكي لاكتشاف المنتجات المناسبة لبشرتك وشعرك من منتجات NEOMART الحقيقية.
-        </p>
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center px-4 py-8 sm:px-6 sm:py-10">
         <NeoChat />
       </main>
 
