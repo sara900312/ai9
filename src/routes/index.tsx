@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { Facebook, Instagram, Mail, Phone, Package, ShoppingCart, Sparkle } from "lucide-react";
-import { NeoChatDialog } from "@/components/neomart/NeoChatDialog";
+import { NeoChat } from "@/components/neomart/NeoChat";
 import { NEOMART_LINKS } from "@/lib/neo-chat";
 
 export const Route = createFileRoute("/")({
@@ -33,8 +32,6 @@ const NAV = [
 ];
 
 function Index() {
-  const [open, setOpen] = useState(false);
-
   return (
     <div dir="rtl" className="flex min-h-screen flex-col bg-background font-sans">
       <div className="bg-gradient-to-l from-primary/40 via-primary/70 to-primary/40 py-2 text-center text-xs font-medium text-primary-foreground">
@@ -70,12 +67,7 @@ function Index() {
         <p className="max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
           مساعدك الذكي لاكتشاف المنتجات المناسبة لبشرتك وشعرك من منتجات NEOMART الحقيقية.
         </p>
-        <button
-          onClick={() => setOpen(true)}
-          className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform hover:scale-[1.03]"
-        >
-          AI Chat
-        </button>
+        <NeoChat />
       </main>
 
       <footer className="border-t-2 border-primary/70 bg-card">
@@ -99,8 +91,6 @@ function Index() {
           </div>
         </div>
       </footer>
-
-      <NeoChatDialog open={open} onClose={() => setOpen(false)} />
     </div>
   );
 }
