@@ -11,9 +11,6 @@ export type NeoProduct = {
   id: number | string;
   name: string;
   slug?: string | null;
-  product_url?: string | null;
-  url?: string | null;
-  link?: string | null;
   short_description?: string | null;
   price?: number | null;
   discounted_price?: number | null;
@@ -82,27 +79,12 @@ const PRODUCT_CATEGORY_PATHS: Record<string, string> = {
   perfume: "perfume",
 };
 
-export function productUrl(product: NeoProduct): string {
-  for (const value of [product.product_url, product.url, product.link]) {
-    if (typeof value === "string" && value.startsWith("https://")) return value;
-  }
-
-  const categoryPath = product.category
-    ? (PRODUCT_CATEGORY_PATHS[product.category] ?? product.category)
-    : null;
-  if (product.slug && categoryPath) {
-    return `https://neomart.space/beauty/product/${encodeURIComponent(categoryPath)}/${encodeURIComponent(product.slug)}/${encodeURIComponent(String(product.id))}`;
-  }
-
-  return NEOMART_LINKS.home;
-}
-
 export async function fetchProductUrl(id: number | string): Promise<string | null> {
   const anonKey = import.meta.env["VITE_NEOMART_SUPABASE_ANON_KEY"] as string | undefined;
   if (!anonKey) return null;
 
   const response = await fetch(
-    `https://ykyzviqwscrjjkucorlp.supabase.co/rest/v1/products?select=*&id=eq.${encodeURIComponent(String(id))}`,
+    `https://ykyzviqwscrjjkucorlp.supabase.co/rest/v1/products?select=id,category,slug&id=eq.${encodeURIComponent(String(id))}`,
     {
       headers: {
         apikey: anonKey,
@@ -115,12 +97,6 @@ export async function fetchProductUrl(id: number | string): Promise<string | nul
   const rows = (await response.json()) as Array<Record<string, unknown>>;
   const product = rows[0];
   if (!product) return null;
-
-  for (const key of ["product_url", "url", "link"]) {
-    if (typeof product[key] === "string" && product[key].startsWith("https://")) {
-      return product[key];
-    }
-  }
 
   const slug = typeof product.slug === "string" ? product.slug : null;
   const category = typeof product.category === "string" ? product.category : null;

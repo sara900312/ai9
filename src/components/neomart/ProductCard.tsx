@@ -3,7 +3,6 @@ import { ExternalLink, ShoppingBag } from "lucide-react";
 import {
   fetchProductUrl,
   formatPrice,
-  productUrl,
   type NeoProduct,
 } from "@/lib/neo-chat";
 
@@ -27,7 +26,7 @@ export function ProductCard({ product }: { product: NeoProduct }) {
     void fetchProductUrl(product.id)
       .catch(() => null)
       .then((url) => {
-        if (active) setResolvedUrl(url ?? productUrl(product));
+        if (active) setResolvedUrl(url);
       })
       .finally(() => {
         if (active) setUrlResolved(true);
@@ -39,7 +38,7 @@ export function ProductCard({ product }: { product: NeoProduct }) {
 
   const url = resolvedUrl ?? "#";
   const openProduct = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!urlResolved) event.preventDefault();
+    if (!urlResolved || !resolvedUrl) event.preventDefault();
   };
   const category = product.category
     ? (CATEGORY_LABELS[product.category] ?? product.category)
@@ -87,21 +86,10 @@ export function ProductCard({ product }: { product: NeoProduct }) {
           <a
             href={url}
             onClick={openProduct}
-            aria-disabled={!urlResolved}
+            aria-disabled={!urlResolved || !resolvedUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            <ShoppingBag className="h-3.5 w-3.5" />
-            شراء المنتج
-          </a>
-          <a
-            href={url}
-            onClick={openProduct}
-            aria-disabled={!urlResolved}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary aria-disabled:pointer-events-none aria-disabled:opacity-50"
           >
             <ExternalLink className="h-3.5 w-3.5" />
             عرض المنتج
