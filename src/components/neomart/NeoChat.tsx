@@ -2,40 +2,39 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Bot,
   MessageSquarePlus,
+  Droplets,
   RefreshCw,
-  Scale,
-  Search,
+  Scissors,
   Send,
   Sparkles,
-  WalletCards,
 } from "lucide-react";
 import { ProductCard } from "./ProductCard";
 import { sendToNeoChat, type ChatMessage } from "@/lib/neo-chat";
 
 const CAPABILITIES = [
   {
-    icon: Search,
-    title: "البحث عن منتج",
-    description: "اعثر على ما يناسب احتياجك",
-    question: "ابحث لي عن منتج مناسب",
+    icon: Droplets,
+    title: "روتين بشرتي",
+    description: "ساعدني أختار المنتجات المناسبة",
+    question: "ساعدني أختار منتجات مناسبة لروتين بشرتي",
+  },
+  {
+    icon: Droplets,
+    title: "العناية بالبشرة الجافة",
+    description: "اكتشف المنتجات المناسبة لبشرتي",
+    question: "أريد منتجات تساعدني على العناية بالبشرة الجافة",
   },
   {
     icon: Sparkles,
-    title: "مساعدتي في الاختيار",
-    description: "توصية مخصصة لك",
-    question: "ساعدني أختار المنتج المناسب",
+    title: "روتين شعري",
+    description: "ساعدني أختار منتجات العناية بشعري",
+    question: "ساعدني أختار منتجات مناسبة للعناية بشعري",
   },
   {
-    icon: Scale,
-    title: "مقارنة المنتجات",
-    description: "قارن الخيارات بسهولة",
-    question: "قارن لي بين المنتجات",
-  },
-  {
-    icon: WalletCards,
-    title: "البحث حسب السعر",
-    description: "خيارات تناسب ميزانيتك",
-    question: "أريد منتجات ضمن ميزانية محددة",
+    icon: Scissors,
+    title: "العناية بالشعر",
+    description: "اكتشف المنتجات المناسبة لاحتياجات شعري",
+    question: "أريد منتجات مناسبة لاحتياجات شعري",
   },
 ];
 
