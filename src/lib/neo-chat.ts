@@ -79,12 +79,21 @@ const PRODUCT_CATEGORY_PATHS: Record<string, string> = {
   perfume: "perfume",
 };
 
-export async function fetchProductUrl(id: number | string): Promise<string | null> {
+export async function fetchProductUrl(
+  product: Pick<NeoProduct, "id" | "category" | "slug">,
+): Promise<string | null> {
+  const directCategoryPath = product.category
+    ? (PRODUCT_CATEGORY_PATHS[product.category] ?? product.category)
+    : null;
+  if (product.slug && directCategoryPath) {
+    return `https://neomart.space/beauty/product/${encodeURIComponent(directCategoryPath)}/${encodeURIComponent(product.slug)}/${encodeURIComponent(String(product.id))}`;
+  }
+
   const anonKey = import.meta.env["VITE_NEOMART_SUPABASE_ANON_KEY"] as string | undefined;
   if (!anonKey) return null;
 
   const response = await fetch(
-    `https://ykyzviqwscrjjkucorlp.supabase.co/rest/v1/products?select=id,category,slug&id=eq.${encodeURIComponent(String(id))}`,
+    `https://ykyzviqwscrjjkucorlp.supabase.co/rest/v1/products?select=id,category,slug&id=eq.${encodeURIComponent(String(product.id))}`,
     {
       headers: {
         apikey: anonKey,
@@ -95,13 +104,13 @@ export async function fetchProductUrl(id: number | string): Promise<string | nul
   if (!response.ok) return null;
 
   const rows = (await response.json()) as Array<Record<string, unknown>>;
-  const product = rows[0];
-  if (!product) return null;
+  const databaseProduct = rows[0];
+  if (!databaseProduct) return null;
 
-  const slug = typeof product.slug === "string" ? product.slug : null;
-  const category = typeof product.category === "string" ? product.category : null;
+  const slug = typeof databaseProduct.slug === "string" ? databaseProduct.slug : null;
+  const category = typeof databaseProduct.category === "string" ? databaseProduct.category : null;
   const categoryPath = category ? (PRODUCT_CATEGORY_PATHS[category] ?? category) : null;
   if (!slug || !categoryPath) return null;
 
-  return `https://neomart.space/beauty/product/${encodeURIComponent(categoryPath)}/${encodeURIComponent(slug)}/${encodeURIComponent(String(id))}`;
+  return `https://neomart.space/beauty/product/${encodeURIComponent(categoryPath)}/${encodeURIComponent(slug)}/${encodeURIComponent(String(product.id))}`;
 }

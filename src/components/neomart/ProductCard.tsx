@@ -23,7 +23,7 @@ export function ProductCard({ product }: { product: NeoProduct }) {
   const oldPrice = product.is_discounted ? formatPrice(product.price) : null;
   useEffect(() => {
     let active = true;
-    void fetchProductUrl(product.id)
+    void fetchProductUrl(product)
       .catch(() => null)
       .then((url) => {
         if (active) setResolvedUrl(url);
