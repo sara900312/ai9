@@ -1,19 +1,33 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bot, RefreshCw, Send } from "lucide-react";
+import { Bot, RefreshCw, Scale, Search, Send, Sparkles, WalletCards } from "lucide-react";
 import { ProductCard } from "./ProductCard";
-import { NEOMART_LINKS, sendToNeoChat, type ChatMessage } from "@/lib/neo-chat";
+import { sendToNeoChat, type ChatMessage } from "@/lib/neo-chat";
 
-const SUGGESTIONS = [
-  "ابحث لي عن منتج للعناية بالشعر",
-  "ما أفضل المنتجات للبشرة الجافة؟",
-  "أريد منتج بسعر مناسب",
-  "ساعدني أختار منتج",
-];
-
-const NAV_LINKS = [
-  { label: "الرئيسية", href: NEOMART_LINKS.home },
-  { label: "المنتجات", href: NEOMART_LINKS.products },
-  { label: "التوصيات", href: NEOMART_LINKS.recommendations },
+const CAPABILITIES = [
+  {
+    icon: Search,
+    title: "البحث عن منتج",
+    description: "اعثر على ما يناسب احتياجك",
+    question: "ابحث لي عن منتج مناسب",
+  },
+  {
+    icon: Sparkles,
+    title: "مساعدتي في الاختيار",
+    description: "توصية مخصصة لك",
+    question: "ساعدني أختار المنتج المناسب",
+  },
+  {
+    icon: Scale,
+    title: "مقارنة المنتجات",
+    description: "قارن الخيارات بسهولة",
+    question: "قارن لي بين المنتجات",
+  },
+  {
+    icon: WalletCards,
+    title: "البحث حسب السعر",
+    description: "خيارات تناسب ميزانيتك",
+    question: "أريد منتجات ضمن ميزانية محددة",
+  },
 ];
 
 export function NeoChat() {
@@ -72,47 +86,33 @@ export function NeoChat() {
         </div>
       </header>
 
-      <nav className="grid grid-cols-2 gap-2 border-b border-border px-4 py-3 sm:grid-cols-4 sm:px-6">
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg px-3 py-2 text-center text-xs font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-          >
-            {link.label}
-          </a>
-        ))}
-        <a
-          href={NEOMART_LINKS.main}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg px-3 py-2 text-center text-xs font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-        >
-          الموقع الرئيسي
-        </a>
-      </nav>
-
       <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6">
         {messages.length === 0 && !loading ? (
-          <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
-            <div className="max-w-md">
-              <p className="text-xl font-extrabold text-foreground">كيف أساعدك اليوم؟</p>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                اسألني عن أي منتج في NEOMART وسأساعدك في العثور على الأنسب لك.
-              </p>
-            </div>
-            <div className="grid w-full max-w-2xl gap-2.5 sm:grid-cols-2">
-              {SUGGESTIONS.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => send(s)}
-                  className="rounded-xl border border-border bg-background px-4 py-3 text-right text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5"
-                >
-                  {s}
-                </button>
-              ))}
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <div className="w-full max-w-2xl">
+              <p className="text-lg font-extrabold text-foreground sm:text-xl">قدرات المساعد الذكي</p>
+              <p className="mt-2 text-sm text-muted-foreground">اختر ما تريد أن يساعدك NEO AI فيه</p>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {CAPABILITIES.map(({ icon: Icon, title, description, question }) => (
+                  <button
+                    key={title}
+                    type="button"
+                    onClick={() => {
+                      setInput(question);
+                      textareaRef.current?.focus();
+                    }}
+                    className="group flex items-center gap-3 rounded-2xl border border-primary/15 bg-background p-4 text-right shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-sm font-bold text-foreground">{title}</span>
+                      <span className="mt-1 block text-xs text-muted-foreground">{description}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         ) : (
