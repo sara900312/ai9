@@ -40,7 +40,7 @@ function Index() {
 
       <header className="border-b border-primary/15 bg-card">
         <div className="relative mx-auto flex max-w-6xl items-center justify-center px-4 py-4">
-          <h1 className="text-center text-2xl font-extrabold tracking-widest text-primary">
+          <h1 className="text-center text-2xl font-extrabold tracking-normal text-primary">
             NEOMART
           </h1>
         </div>
