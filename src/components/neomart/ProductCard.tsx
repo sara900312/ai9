@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { ExternalLink, ShoppingBag } from "lucide-react";
 import {
   fetchProductUrl,
@@ -17,21 +17,30 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export function ProductCard({ product }: { product: NeoProduct }) {
   const [resolvedUrl, setResolvedUrl] = useState<string | null>(null);
+  const [urlResolved, setUrlResolved] = useState(false);
   const price = formatPrice(
     product.is_discounted && product.discounted_price ? product.discounted_price : product.price,
   );
   const oldPrice = product.is_discounted ? formatPrice(product.price) : null;
   useEffect(() => {
     let active = true;
-    void fetchProductUrl(product.id).then((url) => {
-      if (active && url) setResolvedUrl(url);
-    });
+    void fetchProductUrl(product.id)
+      .catch(() => null)
+      .then((url) => {
+        if (active) setResolvedUrl(url ?? productUrl(product));
+      })
+      .finally(() => {
+        if (active) setUrlResolved(true);
+      });
     return () => {
       active = false;
     };
   }, [product.id]);
 
-  const url = resolvedUrl ?? productUrl(product);
+  const url = resolvedUrl ?? "#";
+  const openProduct = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!urlResolved) event.preventDefault();
+  };
   const category = product.category
     ? (CATEGORY_LABELS[product.category] ?? product.category)
     : null;
@@ -77,6 +86,8 @@ export function ProductCard({ product }: { product: NeoProduct }) {
         <div className="flex flex-wrap gap-2 pt-2">
           <a
             href={url}
+            onClick={openProduct}
+            aria-disabled={!urlResolved}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
@@ -86,6 +97,8 @@ export function ProductCard({ product }: { product: NeoProduct }) {
           </a>
           <a
             href={url}
+            onClick={openProduct}
+            aria-disabled={!urlResolved}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary"

@@ -10,6 +10,10 @@ const NEO_CHAT_URL = "https://emobathinfpylwjdcfbo.supabase.co/functions/v1/neo-
 export type NeoProduct = {
   id: number | string;
   name: string;
+  slug?: string | null;
+  product_url?: string | null;
+  url?: string | null;
+  link?: string | null;
   short_description?: string | null;
   price?: number | null;
   discounted_price?: number | null;
@@ -78,7 +82,18 @@ const PRODUCT_CATEGORY_PATHS: Record<string, string> = {
   perfume: "perfume",
 };
 
-export function productUrl(_product: NeoProduct): string {
+export function productUrl(product: NeoProduct): string {
+  for (const value of [product.product_url, product.url, product.link]) {
+    if (typeof value === "string" && value.startsWith("https://")) return value;
+  }
+
+  const categoryPath = product.category
+    ? (PRODUCT_CATEGORY_PATHS[product.category] ?? product.category)
+    : null;
+  if (product.slug && categoryPath) {
+    return `https://neomart.space/beauty/product/${encodeURIComponent(categoryPath)}/${encodeURIComponent(product.slug)}/${encodeURIComponent(String(product.id))}`;
+  }
+
   return NEOMART_LINKS.home;
 }
 
