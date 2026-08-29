@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bot, RefreshCw, Send, Sparkle } from "lucide-react";
+import { Bot, RefreshCw, Send } from "lucide-react";
 import { ProductCard } from "./ProductCard";
 import { NEOMART_LINKS, sendToNeoChat, type ChatMessage } from "@/lib/neo-chat";
 
@@ -68,9 +68,7 @@ export function NeoChat() {
           <Bot className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 className="truncate text-base font-extrabold tracking-wide text-primary">
-            NEOMART AI
-          </h2>
+          <h2 className="truncate text-base font-extrabold tracking-wide text-primary">NEO AI</h2>
           <p className="truncate text-xs text-muted-foreground">
             مساعدك الذكي لاكتشاف المنتجات المناسبة
           </p>
@@ -104,9 +102,6 @@ export function NeoChat() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
         {messages.length === 0 && !loading ? (
           <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-primary/10">
-              <Sparkle className="h-7 w-7 text-primary" />
-            </div>
             <div>
               <p className="text-lg font-bold text-foreground">كيف أساعدك اليوم؟</p>
               <p className="mt-1 text-sm text-muted-foreground">

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Facebook, Instagram, Mail, Phone, Package, ShoppingCart, Sparkle } from "lucide-react";
+import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 import { NeoChat } from "@/components/neomart/NeoChat";
 import { NEOMART_LINKS } from "@/lib/neo-chat";
 
@@ -40,11 +40,9 @@ function Index() {
 
       <header className="border-b border-primary/15 bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <Package className="h-5 w-5" />
-            <ShoppingCart className="h-5 w-5" />
-          </div>
-          <h1 className="text-2xl font-extrabold tracking-widest text-primary">NEOMART</h1>
+          <h1 className="mx-auto text-center text-2xl font-extrabold tracking-widest text-primary">
+            NEOMART
+          </h1>
           <div className="w-14" />
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 pb-3 text-sm text-foreground">
@@ -60,10 +58,7 @@ function Index() {
       </header>
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-6 px-4 py-20 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-primary/10">
-          <Sparkle className="h-8 w-8 text-primary" />
-        </div>
-        <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">NEOMART AI</h2>
+        <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl"></h2>
         <p className="max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
           مساعدك الذكي لاكتشاف المنتجات المناسبة لبشرتك وشعرك من منتجات NEOMART الحقيقية.
         </p>
